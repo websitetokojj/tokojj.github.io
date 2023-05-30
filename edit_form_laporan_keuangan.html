@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Boxicons -->
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<!-- My CSS -->
+	<link rel="stylesheet" href="style.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+	<link rel="stylesheet" href="style.css">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	</style>
+
+	<title>Laporan Laba Rugi</title>
+</head>
+
+<body>
+
+
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="#" class="brand">
+			<img src="logo.png" alt="logo">
+			<span class="text" style="font-family: 'Lato', sans-serif; font-weight: 700;">POS-APP</span>
+		</a>
+		<ul class="side-menu top">
+			<li>
+				<a href="main.html">
+					<i class='bx bxs-dashboard'></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li>
+				<a href="daftar_pelanggan.html">
+					<i class='bx bxs-group'></i>
+					<span class="text">Daftar Pelanggan</span>
+				</a>
+			</li>
+			<li>
+				<a href="daftar_pemasok.html">
+					<i class='bx bxs-archive'></i>
+					<span class="text">Daftar Pemasok</span>
+				</a>
+			</li>
+			<li>
+				<a href="daftar_barang.html">
+					<i class='bx bxs-edit'></i>
+					<span class="text">Daftar Barang</span>
+				</a>
+			</li>
+			<li>
+				<a href="daftar_piutang.html">
+					<i class='bx bxs-paste'></i>
+					<span class="text">Daftar Piutang</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="laporan_penjualan.html">
+					<i class='bx bxs-receipt'></i>
+					<span class="text">Laporan Penjualan</span>
+				</a>
+			</li>
+			<li class="active">
+				<a href="laporan_keuangan.html">
+					<i class='bx bxs-spreadsheet'></i>
+					<span class="text">Laporan Laba Rugi</span>
+				</a>
+			</li>
+		
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
+
+
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav class="container-fluid">
+			<i class='bx bx-menu'></i>
+			<a href="#" class="nav-link">Categories</a>
+			<form action="#">
+				<div class="form-input">
+					<button type="" class=""><i class='bx' ></i></button>
+				</div>
+			</form>
+			<input type="checkbox" id="switch-mode" hidden>
+			<label for="switch-mode" class="switch-mode"></label>
+			<a href="#" class="notification">
+				<i class='bx bxs-bell' ></i>
+				<span class="num">8</span>
+			</a>
+			<a href="#" class="profile">
+				<img src="people.png">
+				</a>
+			</div>
+		</nav>
+		<!-- NAVBAR -->
+
+		<!-- MAIN -->
+		<main>
+			<div class="wrapper">
+				<div class="title">
+					Edit Form Laporan Laba Rugi
+				</div>
+				<div class="form">
+					<form>
+						<div class="inputfield">
+							<label for="tax">Pajak:</label>
+							<input type="text" class="input" id="tax" name="tax">
+						</div>
+						<div id="incomeList">
+
+						</div>
+						<div id="load"></div>
+						<div class="inputfield">
+							<label for="period">Periode :</label>
+							<input type="text" class="input" id="period" name="period">
+						</div>
+
+						<button type="button" class="btn-warning"
+							style="background-color: #ff9d41bb; width: 100%; border: none; color: white; border-radius: 10px; padding-top: 5px; padding-bottom: 5px;"
+							onclick="submitForm()">Submit</button>
+					</form>
+
+
+				</div>
+			</div>
+
+		</main>
+
+		<script src="script.js"></script>
+		<script>
+			const form = document.querySelector('form');
+			const urlParams = new URLSearchParams(window.location.search);
+			const itemId = urlParams.get('id');
+
+			function getHeadersForGet() {
+				const headers = new Headers();
+				headers.append('Authorization', 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoYXJpczEyM0BnbWFpbC5jb20iLCJpYXQiOjE2ODI0Nzg2MzUsImV4cCI6MTcxNDAxNDYzNX0.Vob8TMa_tDzQxcv2EVOzJEc6gP_Nzt_li5f3KFJSGAaADie-p_fRswG8iQ4vJ4eDcfEk68gYC4DrkON9Zm0oMQ');
+				headers.append('Content-Type', 'application/json');
+				return headers;
+			}
+			function getHeadersForUpdate() {
+				const headers = new Headers();
+				headers.append('Authorization', 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoYXJpczEyM0BnbWFpbC5jb20iLCJpYXQiOjE2ODI0Nzg2MzUsImV4cCI6MTcxNDAxNDYzNX0.Vob8TMa_tDzQxcv2EVOzJEc6gP_Nzt_li5f3KFJSGAaADie-p_fRswG8iQ4vJ4eDcfEk68gYC4DrkON9Zm0oMQ');
+				headers.append('Content-Type', 'application/json');
+				return headers;
+			}
+
+			const getItemUrl = `https://pos-api.herokuapp.com/api/pos/v1/incomestatement/getById?income_statement_id=${itemId}`
+
+			fetch(getItemUrl, {
+				method: 'GET',
+				headers: getHeadersForGet()
+			})
+				.then(response => response.json())
+				.then(itemData => {
+					const itemsData = itemData.data;
+					console.log(itemsData);
+					// populate input fields with existing data
+					document.getElementById('tax').value = itemsData.tax;
+					//document.getElementById('incomeName').value = itemsData.income[0].incomeName;
+					//document.getElementById('price').value = itemsData.income.price;
+					//document.getElementById('loadName').value = itemsData.load.loadName;
+					//document.getElementById('loadPrice').value = itemsData.load.price;
+					document.getElementById('period').value = itemsData.period;
+					const Fields = document.getElementById('incomeList')
+					const load= document.getElementById('load')
+
+					itemsData?.income?.forEach((item,main) => {
+						var node_1 = document.createElement('DIV');
+						node_1.setAttribute('class', 'inputfield');
+
+						var node_2 = document.createElement('LABEL');
+						node_2.setAttribute('for', 'incomeName');
+						node_2.innerText = "Nama Pendapatan"
+						node_1.appendChild(node_2);
+
+						var node_3 = document.createElement('INPUT');
+						node_3.setAttribute('type', 'text');
+						node_3.setAttribute('class', 'input incomeName');
+						node_3.setAttribute('id', `incomeName${main}`);
+						node_1.appendChild(node_3);
+						Fields.appendChild(node_1)
+						document.getElementById(`incomeName${main}`).value=item.incomeName
+
+						var node_4 = document.createElement('DIV');
+						node_4.setAttribute('class', 'inputfield');
+
+						var node_5 = document.createElement('LABEL');
+						node_5.setAttribute('for', 'price');
+						node_5.innerText = "price"
+						node_4.appendChild(node_5);
+
+						var node_6 = document.createElement('INPUT');
+						node_6.setAttribute('type', 'text');
+						node_6.setAttribute('class', 'input price');
+						node_6.setAttribute('id', `price${main}`);
+						node_6.setAttribute('name', 'price');
+						node_4.appendChild(node_6);
+						Fields.appendChild(node_4)
+						document.getElementById(`price${main}`).value=item.price
+
+					}
+					
+					)
+					itemsData?.load?.forEach((item,main) => {
+						var node_1 = document.createElement('DIV');
+						node_1.setAttribute('class', 'inputfield');
+
+						var node_2 = document.createElement('LABEL');
+						node_2.setAttribute('for', 'loadName');
+						node_2.innerText = "NamaBeban"
+						node_1.appendChild(node_2);
+
+						var node_3 = document.createElement('INPUT');
+						node_3.setAttribute('type', 'text');
+						node_3.setAttribute('class', 'input loadName');
+						node_3.setAttribute('id', `loadName${main}`);
+						node_1.appendChild(node_3);
+						Fields.appendChild(node_1)
+						document.getElementById(`loadName${main}`).value=item.loadName
+
+						var node_4 = document.createElement('DIV');
+						node_4.setAttribute('class', 'inputfield');
+
+						var node_5 = document.createElement('LABEL');
+						node_5.setAttribute('for', 'price');
+						node_5.innerText = "price"
+						node_4.appendChild(node_5);
+
+						var node_6 = document.createElement('INPUT');
+						node_6.setAttribute('type', 'text');
+						node_6.setAttribute('class', 'input price');
+						node_6.setAttribute('id', `priceLoad${main}`);
+						node_6.setAttribute('name', 'price');
+						node_4.appendChild(node_6);
+						Fields.appendChild(node_4)
+						document.getElementById(`priceLoad${main}`).value=item.price
+					}
+					)
+
+				})
+				.catch(error => console.error(error));
+
+
+			function submitForm() {
+				const tax = document.getElementById('tax').value;
+				const incomeName = document.getElementById('incomeName0').value;
+				const price = document.getElementById('price0').value;
+				const loadName = document.getElementById('loadName0').value;
+				const priceLoad = document.getElementById('priceLoad0').value;
+				const incomeName2 = document.getElementById('incomeName1').value;
+				const price2 = document.getElementById('price1').value;
+				const loadName2 = document.getElementById('loadName1').value;
+				const priceLoad2 = document.getElementById('priceLoad1').value;
+				console.log(tax)
+				const updateItemUrl = `https://pos-api.herokuapp.com/api/pos/v1/incomestatement/update?income_statement_id=${itemId}`;
+				fetch(updateItemUrl, {
+					method: 'PUT',
+					headers: getHeadersForUpdate(),
+					body: JSON.stringify({
+						"tax": tax,
+						"incomeRequest": [
+							{
+								"incomeName": incomeName,
+								"price": 1
+							},
+							{
+								"incomeName": incomeName2,
+								"price": 2
+							}
+						],
+						"loadRequest": [
+							{
+								"loadName": loadName,
+								"price": 1
+							},
+							{
+								"loadName": loadName2,
+								"price": 2
+							}
+						],
+						"period" : "2023-11-29",
+						
+				})
+				
+					})
+					
+					
+
+					.then(response => response.json())
+					.then(responseData => {
+						console.log(responseData);
+						alert('Item updated successfully!');
+						location.href = 'laporan_keuangan.html';
+					})
+					.catch(error => console.error(error));
+			}
+		</script>
+</body>
+
+</html>

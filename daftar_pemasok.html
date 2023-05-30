@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Boxicons -->
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<!-- My CSS -->
+	<link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style> 
+    #content main .table{
+	margin-top: 0px;
+}
+    </style>
+
+	<title>Detail Pemasok</title>
+</head>
+<body>
+
+
+		<!-- SIDEBAR -->
+<section id="sidebar">
+	<a href="#" class="brand">
+		<img src="logo.png" alt="logo">
+		<span class="text" style="font-family: 'Lato', sans-serif; font-weight: 700;">POS-APP</span>
+	</a>
+	<ul class="side-menu top">
+		<li>
+			<a href="main.html">
+				<i class='bx bxs-dashboard' ></i>
+				<span class="text">Dashboard</span>
+			</a>
+		</li>
+		<li>
+			<a href="daftar_pelanggan.html">
+				<i class='bx bxs-group' ></i>
+				<span class="text">Daftar Pelanggan</span>
+			</a>
+		</li>
+		<li class="active">
+			<a href="daftar_pemasok.html">
+				<i class='bx bxs-archive' ></i>
+				<span class="text">Daftar Pemasok</span>
+			</a>
+		</li>
+		<li>
+			<a href="daftar_barang.html">
+				<i class='bx bxs-edit' ></i>
+				<span class="text">Daftar Barang</span>
+			</a>
+		</li>
+		<li>
+			<a href="daftar_piutang.html">
+				<i class='bx bxs-paste' ></i>
+				<span class="text">Daftar Piutang</span>
+			</a>
+		</li>
+	</ul>
+	<ul class="side-menu">
+		<li>
+			<a href="laporan_penjualan.html">
+				<i class='bx bxs-receipt' ></i>
+				<span class="text">Laporan Penjualan</span>
+			</a>
+		</li>
+		<li>
+			<a href="laporan_keuangan.html">
+				<i class='bx bxs-spreadsheet' ></i>
+				<span class="text">Laporan Laba Rugi</span>
+			</a>
+		</li>
+	</ul>
+</section>
+<!-- SIDEBAR -->
+
+
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav class="container-fluid">
+			<i class='bx bx-menu'></i>
+			<a href="#" class="nav-link">Categories</a>
+			<form action="#">
+				<div class="form-input">
+					<button type="" class=""><i class='bx' ></i></button>
+				</div>
+			</form>
+			<input type="checkbox" id="switch-mode" hidden>
+			<label for="switch-mode" class="switch-mode"></label>
+			<a href="#" class="notification">
+				<i class='bx bxs-bell' ></i>
+				<span class="num">8</span>
+			</a>
+			<a href="#" class="profile">
+				<img src="people.png">
+				</a>
+			</div>
+		</nav>
+		<!-- NAVBAR -->
+
+		<!-- MAIN -->
+		<main>
+			
+                <h5 style="text-align: center; margin-top: 50px;color: #3C91E6;">Daftar Pemasok</h5>
+        
+                <!-- Search -->
+                <form class="form-search">
+                  <input class="form-control" type="search" placeholder="Search" aria-label="Search" id="search-input">
+                  <button class="btn btn-warning button-hover" type="submit">Search</button>
+                </form>
+            
+                <!-- Button tambah -->
+                <button type="button" class="btn btn-success" id="btn-tambah"><a href="form_daftar_pemasok.html" class="text-light"> Tambah</a> </button>
+            
+                <!-- Table -->
+                <div class="table" style="margin-top: 0;">
+                  <table class="table table-hover" id="item-table">
+                    <thead class="thead-color">
+                      <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama Pemasok</th>
+                        <th scope="col">Kota</th>
+                        <th scope="col">Jenis Barang</th>
+                        <th scope="col">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-light">
+                    
+                    </tbody>
+                  </table>
+                </div>
+        
+            
+		</main>
+
+
+			
+	
+
+	<script src="script.js"></script>
+	<script>
+		const tableBody = document.querySelector('#item-table tbody');
+		const searchField = document.querySelector('.form-search');
+		const headers = new Headers();
+		let rowNumber = 1;
+		headers.append('Authorization', 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrYW5uYXB5b25AZ21haWwuY29tIiwiaWF0IjoxNjgxNjkxOTA2LCJleHAiOjE3MTMyMjc5MDZ9.Glkhxysq9Up6jihIXx_XYQfE6FuT_gPmPHEGV8twhlpsQNygN5qrUhFsGOBP_KXnvNI0B4pPGWxi0nZYNqQbWA');
+		
+		//Searching
+		searchField.addEventListener('submit', event => {
+event.preventDefault(); // prevent form submission
+const searchInput = document.querySelector('#search-input');
+const searchTerm = searchInput.value;
+const url = `https://pos-api.herokuapp.com/api/pos/v1/supplier/search?q=${searchTerm}`;
+fetch(url, {
+	method: 'GET',
+	headers: headers
+})
+	.then(response => response.json())
+	.then(responseData => {
+		const items = responseData.data;
+		console.log(items); // log the data to verify it's being returned correctly
+		tableBody.innerHTML = ''; // clear the table body
+		rowNumber = 1;
+		items.forEach(item => {
+			const row = document.createElement('tr');
+			row.innerHTML = `
+			<td>${rowNumber++}</td>
+				<td> <a href="detail_pemasok.html?id=${item.id}"> ${item.name} </a></td>
+				<td>${item.address.city}</td>
+				<td>${item.category}</td>
+				<td>
+				<button type="button" class="btn btn-danger delete-button" data-item-id="${item.id}">
+				<i class="fa fa-trash"></i> 
+				</button>
+				<a href="edit_form_pemasok.html?id=${item.id}"  class="btn btn-warning edit-button" data-item-id="${item.id}">
+				<i class="fa fa-edit"></i> 
+				</button>
+				</td>	
+			`;
+			tableBody.appendChild(row);
+		});
+
+		const deleteButtons = document.querySelectorAll('.delete-button');
+		deleteButtons.forEach(button => {
+			button.addEventListener('click', () => {
+				const itemId = button.getAttribute('data-item-id');
+				deleteItem(itemId);
+			});
+		});
+	})
+	.catch(error => console.error(error));
+});
+
+//View Item
+		
+		fetch('https://pos-api.herokuapp.com/api/pos/v1/supplier/all', {
+			method: 'GET',
+			headers: headers
+		})
+			.then(response => response.json())
+			.then(responseData => {
+				const items = responseData.data;
+				console.log(items); // log the data to verify it's being returned correctly
+				items.forEach(item => {
+					const row = document.createElement('tr');
+					row.innerHTML = `
+				<td>${rowNumber++}</td>
+				<td><a href="detail_pemasok.html?id=${item.id}" style="color:black"> ${item.name} </a></td>
+				<td>${item.address.city}</td>
+				<td>${item.category}</td>
+				<td>
+				<button type="button" class="btn btn-danger delete-button" data-item-id="${item.id}">
+				<i class="fa fa-trash"></i> 
+				</button>
+				<a href="edit_form_pemasok.html?id=${item.id}"  class="btn btn-warning edit-button" data-item-id="${item.id}">
+				<i class="fa fa-edit"></i> 
+				</button>
+				</td>	
+  `;
+					tableBody.appendChild(row);
+				});
+
+		const deleteButtons = document.querySelectorAll('.delete-button');
+		deleteButtons.forEach(button =>{
+			button.addEventListener('click', () =>{
+				const itemId = button.getAttribute('data-item-id');
+				deleteItem(itemId);
+			});
+		});
+			})
+			.catch(error => console.error(error));
+
+		function deleteItem(itemId){
+			fetch(`https://pos-api.herokuapp.com/api/pos/v1/supplier/${itemId}`,{
+				method: 'DELETE',
+				headers: headers,
+			})
+			.then(response =>{
+				if(!response.ok){
+					throw new Error('Network response was not ok')
+				}
+				return response.json
+			})
+			.then(responseData => {
+				console.log(responseData);
+
+				location.reload();
+			})
+			.catch(error => console.error(error))
+		}
+
+</script>
+</body>
+</html>

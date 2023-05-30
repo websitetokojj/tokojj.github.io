@@ -1,0 +1,114 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <label for="tax">Tax:</label>
+        <input type="number" id="tax" name="tax" />
+      </div>
+      <div>
+        <label for="period">Period:</label>
+        <input type="date" id="period" name="period" />
+      </div>
+      <div>
+        <button type="button" id="add-income">Add Income</button>
+        <div id="income-container"></div>
+      </div>
+      <div>
+        <button type="button" id="add-load">Add Load</button>
+        <div id="load-container"></div>
+      </div>
+      <button type="submit" id="submit-btn">Submit</button>
+<script>
+    const incomeContainer = document.getElementById('income-container');
+const loadContainer = document.getElementById('load-container');
+const addIncomeBtn = document.getElementById('add-income');
+const addLoadBtn = document.getElementById('add-load');
+const submitBtn = document.getElementById('submit-btn');
+
+let incomeRequest = [];
+let loadRequest = [];
+
+addIncomeBtn.addEventListener('click', () => {
+  const incomeInput = document.createElement('div');
+  incomeInput.innerHTML = `
+    <div>
+      <label for="income-name">Income Name:</label>
+      <input type="text" name="incomeName[]" />
+    </div>
+    <div>
+      <label for="income-price">Income Price:</label>
+      <input type="number" name="incomePrice[]" />
+    </div>
+  `;
+  incomeContainer.appendChild(incomeInput);
+});
+
+addLoadBtn.addEventListener('click', () => {
+  const loadInput = document.createElement('div');
+  loadInput.innerHTML = `
+    <div>
+      <label for="load-name">Load Name:</label>
+      <input type="text" name="loadName[]" />
+    </div>
+    <div>
+      <label for="load-price">Load Price:</label>
+      <input type="number" name="loadPrice[]" />
+    </div>
+  `;
+  loadContainer.appendChild(loadInput);
+});
+
+submitBtn.addEventListener('click', () => {
+  incomeRequest = [];
+  loadRequest = [];
+  const incomeInputs = document.querySelectorAll('[name="incomeName[]"]');
+  const incomePrices = document.querySelectorAll('[name="incomePrice[]"]');
+  const loadInputs = document.querySelectorAll('[name="loadName[]"]');
+  const loadPrices = document.querySelectorAll('[name="loadPrice[]"]');
+  for (let i = 0; i < incomeInputs.length; i++) {
+    const income = {
+      incomeName: incomeInputs[i].value,
+      price: parseFloat(incomePrices[i].value)
+    };
+    incomeRequest.push(income);
+  }
+  for (let i = 0; i < loadInputs.length; i++) {
+    const load = {
+      loadName: loadInputs[i].value,
+      price: parseFloat(loadPrices[i].value)
+    };
+    loadRequest.push(load);
+  }
+  const tax = parseFloat(document.getElementById('tax').value);
+  const period = document.getElementById('period').value;
+
+  const data = {
+    tax: tax,
+    period: period,
+    incomeRequest: incomeRequest,
+    loadRequest: loadRequest
+  };
+
+  fetch('https://pos-api.herokuapp.com/api/pos/v1/incomestatement/add', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoYXJpc0BnbWFpbC5jb20iLCJpYXQiOjE2ODE2OTA4NjYsImV4cCI6MTcxMzIyNjg2Nn0.Px4-upd9lg3sx3RabUVF5ivAbnVHaBJRb7-lzARa6FyIObnAYgUCSIyhycfd1tg0q1kl6yGvp_XkdlgaJnCMxg'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Success:', data);
+  })
+  .catch(error => {
+    console.error('error')})})
+
+</script>      
+</body>
+</html>

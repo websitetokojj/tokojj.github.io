@@ -1,0 +1,53 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <table id="myTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Total Stock</th>
+                <th>Initial Stock</th>
+                <th>Stock Out</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        const tableBody = document.querySelector('#myTable tbody');
+        const headers = new Headers();
+        headers.append('Authorization', 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoYXJpc0BnbWFpbC5jb20iLCJpYXQiOjE2ODE2ODg3NzcsImV4cCI6MTcxMzIyNDc3N30.LUoknrlnunF5qw9ABTIOglkzi1MKr-lgYHsij12PwtJPrgSe4vwbLpc4-nPyYls_fz1wxUwaUJPaSpXmOmRLkg');
+        fetch('https://pos-api.herokuapp.com/api/pos/v1/items/getAll?offset=0&pageSize=10&field=price', {
+            method: 'GET',
+            headers: headers
+        })
+            .then(response => response.json())
+            .then(responseData => {
+                const items = responseData.data;
+                console.log(items); // log the data to verify it's being returned correctly
+                items.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+        <td>${item.name}</td>
+        <td>${item.price}</td>
+        <td>${item.totalStock}</td>
+        <td>${item.initialStock}</td>
+        <td>${item.stockOut}</td>
+      `;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error(error));
+    </script>
+</body>
+
+</html>

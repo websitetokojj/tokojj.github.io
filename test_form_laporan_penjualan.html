@@ -1,0 +1,120 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+        <div class="inputfield">
+            <label for="name">Nama: </label>
+            <select class="form-select" id="name" name="name"></select>
+        </div>
+        <label for="paymentDate">Payment Date:</label>
+        <input type="date" id="paymentDate" name="paymentDate"><br><br>
+        <div id="items-container">
+            <div class="item">
+                <label for="nameItem_1">Item:</label>
+                <select id="nameItem_1" name="nameItem[]">
+                    <option value="">--Select an item--</option>
+                </select>
+                <label for="itemquantity_1">Quantity:</label>
+                <input type="number" id="itemquantity_1" name="itemquantity[]" min="1" value="1">
+                <button type="button" class="remove-item">Remove</button>
+            </div>
+        </div>
+        <button type="button" id="add-item">Add Item</button><br><br>
+        <button type="button" id="send-data">Send Data</button>
+    </form>
+<script>
+  // Initialize item counter
+let itemCount = 1;
+
+// Get item options from API and populate select element
+function populateItemOptions() {
+    fetch('https://pos-api.herokuapp.com/api/pos/v1/items/getAll?offset=0&pageSize=1000&field=price', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoYXJpc0BnbWFpbC5jb20iLCJpYXQiOjE2ODE2ODg3NzcsImV4cCI6MTcxMzIyNDc3N30.LUoknrlnunF5qw9ABTIOglkzi1MKr-lgYHsij12PwtJPrgSe4vwbLpc4-nPyYls_fz1wxUwaUJPaSpXmOmRLkg' },
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+        .then(data => {
+            const selectElements = document.querySelectorAll('select[name="nameItem[]"]');
+            selectElements.forEach(selectElement => {
+                data.data.forEach(item => {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = item.data.id;
+                    optionElement.textContent = item.data.name;
+                    selectElement.appendChild(optionElement);
+                });
+            });
+        })
+        .catch(error => console.error(error));
+}
+
+// Add item to the form
+function addItem() {
+    const itemsContainer = document.getElementById("items-container");
+    const newItem = document.createElement("div");
+    newItem.classList.add("item");
+    newItem.innerHTML = `
+        <label for="nameItem_${itemCount}">Item:</label>
+        <select id="nameItem_${itemCount}" name="nameItem[]">
+            <option value="">--Select an item--</option>
+        </select>
+        <label for="itemquantity_${itemCount}">Quantity:</label>
+        <input type="number" id="itemquantity_${itemCount}" name="itemquantity[]" min="1" value="1">
+        <button type="button" class="remove-item">Remove</button>
+    `;
+    itemsContainer.appendChild(newItem);
+
+    // Increment item counter
+    itemCount++;
+
+    // Populate options for new item
+    populateItemOptions();
+}
+
+// Remove item from the form
+function removeItem(event) {
+    const item = event.target.closest('.item');
+    item.remove();
+}
+
+// Send data to API
+function sendData() {
+    const paymentDate = document.getElementById("paymentDate").value;
+    const items = Array.from(document.querySelectorAll('.item')).map(itemElement => {
+        const id = itemElement.querySelector('select').value;
+        const quantity = parseInt(itemElement.querySelector('input').value);
+        return { id, quantity };
+    });
+    const data = { paymentDate, items };
+
+    fetch('https://pos-api.herokuapp.com/api/pos/v1/items/getAll?offset=0&pageSize=1000&field=price', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoYXJpc0BnbWFpbC5jb20iLCJpYXQiOjE2ODE2ODg3NzcsImV4cCI6MTcxMzIyNDc3N30.LUoknrlnunF5qw9ABTIOglkzi1MKr-lgYHsij12PwtJPrgSe4vwbLpc4-nPyYls_fz1wxUwaUJPaSpXmOmRLkg' },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data); // Handle successful response
+    })
+    .catch(error => {
+        console.error(error); // Handle error
+    });
+}
+
+// Add event listeners
+document.addEventListener("DOMContentLoaded", populateItemOptions);
+document.getElementById("add-item").addEventListener("click", addItem);
+document.addEventListener("click", event => {
+    if (event.target.classList.contains('remove-item')) {
+        removeItem(event);
+    }
+});
+document.getElementById("send-data").addEventListener("click", sendData);
+</script>    
+</body>
+</html>
